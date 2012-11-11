@@ -12,76 +12,55 @@ namespace IisAdmin.TestConsole.ServiceReference1 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IAdministration")]
-    public interface IAdministration {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IAdministrationService")]
+    public interface IAdministrationService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/AddUser", ReplyAction="http://tempuri.org/IAdministration/AddUserResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/AddUser", ReplyAction="http://tempuri.org/IAdministrationService/AddUserResponse")]
         bool AddUser(string username, string passwd, string fqdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/AddUser", ReplyAction="http://tempuri.org/IAdministration/AddUserResponse")]
-        System.Threading.Tasks.Task<bool> AddUserAsync(string username, string passwd, string fqdn);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/DelUser", ReplyAction="http://tempuri.org/IAdministration/DelUserResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/DelUser", ReplyAction="http://tempuri.org/IAdministrationService/DelUserResponse")]
         bool DelUser(string username);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/DelUser", ReplyAction="http://tempuri.org/IAdministration/DelUserResponse")]
-        System.Threading.Tasks.Task<bool> DelUserAsync(string username);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/SetPasswd", ReplyAction="http://tempuri.org/IAdministration/SetPasswdResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/SetPasswd", ReplyAction="http://tempuri.org/IAdministrationService/SetPasswdResponse")]
         bool SetPasswd(string username, string passwd);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/SetPasswd", ReplyAction="http://tempuri.org/IAdministration/SetPasswdResponse")]
-        System.Threading.Tasks.Task<bool> SetPasswdAsync(string username, string passwd);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/ResetPermissions", ReplyAction="http://tempuri.org/IAdministration/ResetPermissionsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/ResetPermissions", ReplyAction="http://tempuri.org/IAdministrationService/ResetPermissionsResponse")]
         bool ResetPermissions(string username);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/ResetPermissions", ReplyAction="http://tempuri.org/IAdministration/ResetPermissionsResponse")]
-        System.Threading.Tasks.Task<bool> ResetPermissionsAsync(string username);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/AddHost", ReplyAction="http://tempuri.org/IAdministration/AddHostResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/AddHost", ReplyAction="http://tempuri.org/IAdministrationService/AddHostResponse")]
         bool AddHost(string username, string fqdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/AddHost", ReplyAction="http://tempuri.org/IAdministration/AddHostResponse")]
-        System.Threading.Tasks.Task<bool> AddHostAsync(string username, string fqdn);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/DelHost", ReplyAction="http://tempuri.org/IAdministration/DelHostResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/DelHost", ReplyAction="http://tempuri.org/IAdministrationService/DelHostResponse")]
         bool DelHost(string username, string fqdn);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/DelHost", ReplyAction="http://tempuri.org/IAdministration/DelHostResponse")]
-        System.Threading.Tasks.Task<bool> DelHostAsync(string username, string fqdn);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/MkDir", ReplyAction="http://tempuri.org/IAdministration/MkDirResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministrationService/MkDir", ReplyAction="http://tempuri.org/IAdministrationService/MkDirResponse")]
         bool MkDir(string username, string directory);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAdministration/MkDir", ReplyAction="http://tempuri.org/IAdministration/MkDirResponse")]
-        System.Threading.Tasks.Task<bool> MkDirAsync(string username, string directory);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IAdministrationChannel : IisAdmin.TestConsole.ServiceReference1.IAdministration, System.ServiceModel.IClientChannel {
+    public interface IAdministrationServiceChannel : IisAdmin.TestConsole.ServiceReference1.IAdministrationService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class AdministrationClient : System.ServiceModel.ClientBase<IisAdmin.TestConsole.ServiceReference1.IAdministration>, IisAdmin.TestConsole.ServiceReference1.IAdministration {
+    public partial class AdministrationServiceClient : System.ServiceModel.ClientBase<IisAdmin.TestConsole.ServiceReference1.IAdministrationService>, IisAdmin.TestConsole.ServiceReference1.IAdministrationService {
         
-        public AdministrationClient() {
+        public AdministrationServiceClient() {
         }
         
-        public AdministrationClient(string endpointConfigurationName) : 
+        public AdministrationServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public AdministrationClient(string endpointConfigurationName, string remoteAddress) : 
+        public AdministrationServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public AdministrationClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public AdministrationServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public AdministrationClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public AdministrationServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -89,56 +68,28 @@ namespace IisAdmin.TestConsole.ServiceReference1 {
             return base.Channel.AddUser(username, passwd, fqdn);
         }
         
-        public System.Threading.Tasks.Task<bool> AddUserAsync(string username, string passwd, string fqdn) {
-            return base.Channel.AddUserAsync(username, passwd, fqdn);
-        }
-        
         public bool DelUser(string username) {
             return base.Channel.DelUser(username);
-        }
-        
-        public System.Threading.Tasks.Task<bool> DelUserAsync(string username) {
-            return base.Channel.DelUserAsync(username);
         }
         
         public bool SetPasswd(string username, string passwd) {
             return base.Channel.SetPasswd(username, passwd);
         }
         
-        public System.Threading.Tasks.Task<bool> SetPasswdAsync(string username, string passwd) {
-            return base.Channel.SetPasswdAsync(username, passwd);
-        }
-        
         public bool ResetPermissions(string username) {
             return base.Channel.ResetPermissions(username);
-        }
-        
-        public System.Threading.Tasks.Task<bool> ResetPermissionsAsync(string username) {
-            return base.Channel.ResetPermissionsAsync(username);
         }
         
         public bool AddHost(string username, string fqdn) {
             return base.Channel.AddHost(username, fqdn);
         }
         
-        public System.Threading.Tasks.Task<bool> AddHostAsync(string username, string fqdn) {
-            return base.Channel.AddHostAsync(username, fqdn);
-        }
-        
         public bool DelHost(string username, string fqdn) {
             return base.Channel.DelHost(username, fqdn);
         }
         
-        public System.Threading.Tasks.Task<bool> DelHostAsync(string username, string fqdn) {
-            return base.Channel.DelHostAsync(username, fqdn);
-        }
-        
         public bool MkDir(string username, string directory) {
             return base.Channel.MkDir(username, directory);
-        }
-        
-        public System.Threading.Tasks.Task<bool> MkDirAsync(string username, string directory) {
-            return base.Channel.MkDirAsync(username, directory);
         }
     }
 }

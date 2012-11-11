@@ -15,7 +15,7 @@ namespace IisAdmin.Tests.Unit
         public void When_Adding_User__Then_It_Will_Be_Created_Under_IIS_IUSRS_Group()
         {
             var username = string.Format("testUser{0}",DateTime.Now.Millisecond);
-            var administration = new Administration();
+            var administration = new AdministrationService();
             administration.AddUser(username, "!Password123", "www.test.com");
 
             var context = new PrincipalContext(ContextType.Machine);
@@ -33,7 +33,7 @@ namespace IisAdmin.Tests.Unit
         public void When_Deleting_User__Then_It_Should_Removed_And_Dissappear_From_IIS_IUSRS_Group()
         {
             var username = string.Format("testUser{0}", DateTime.Now.Millisecond);
-            var administration = new Administration();
+            var administration = new AdministrationService();
             var userAdded = administration.AddUser(username, "!Password123", "");
             Assert.IsTrue(userAdded);
 
@@ -54,7 +54,7 @@ namespace IisAdmin.Tests.Unit
         public void When_Setting_NewPassword_On_User__Then_We_Should_Be_Able_To_Logon_With_New_Password()
         {
             var username = string.Format("testUser{0}", DateTime.Now.Millisecond);
-            var administration = new Administration();
+            var administration = new AdministrationService();
             var userAdded = administration.AddUser(username, "!Password123", "");
             Assert.IsTrue(userAdded);
 

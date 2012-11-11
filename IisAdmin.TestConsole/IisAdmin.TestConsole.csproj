@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IisAdmin.TestConsole</RootNamespace>
     <AssemblyName>IisAdmin.TestConsole</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +38,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
@@ -61,20 +63,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Service References\ServiceReference1\Administration.wsdl" />
-    <None Include="Service References\ServiceReference1\Administration.xsd">
+    <None Include="Service References\ServiceReference1\AdministrationService.wsdl" />
+    <None Include="Service References\ServiceReference1\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\Administration1.xsd">
+    <None Include="Service References\ServiceReference1\item1.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClearUserPassBinding\ClearUsernameBinding.csproj">
+      <Project>{d2bc4c2b-591e-4489-9515-0075112f73b0}</Project>
+      <Name>ClearUsernameBinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IisAdmin\IisAdmin.csproj">
       <Project>{B985A01E-29F4-4B69-9F8A-1F8F6464D7C8}</Project>
       <Name>IisAdmin</Name>
@@ -88,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\item.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ServiceReference1\configuration91.svcinfo" />

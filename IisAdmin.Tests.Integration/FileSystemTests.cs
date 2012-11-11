@@ -14,7 +14,7 @@ namespace IisAdmin.Tests.Unit
         public void When_Creating_Home_Directory__Then_It_Should_Have_The_Appropriate_Rights()
         {
             var username = string.Format("testUser{0}", DateTime.Now.Millisecond);
-            var administration = new Administration();
+            var administration = new AdministrationService();
             var context = new PrincipalContext(ContextType.Machine);
             var user = new UserPrincipal(context)
                            {

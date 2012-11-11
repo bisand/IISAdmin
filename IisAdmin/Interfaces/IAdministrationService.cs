@@ -3,7 +3,7 @@
 namespace IisAdmin.Interfaces
 {
     [ServiceContract]
-    public interface IAdministration
+    public interface IAdministrationService
     {
         [OperationContract]
         bool AddUser(string username, string passwd, string fqdn);

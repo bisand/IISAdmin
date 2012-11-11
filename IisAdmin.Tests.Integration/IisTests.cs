@@ -19,7 +19,7 @@ namespace IisAdmin.Tests.Unit
             var username = string.Format("testUser{0}", DateTime.Now.Millisecond);
             const string password = "!Password123";
 
-            var administration = new Administration();
+            var administration = new AdministrationService();
             var context = new PrincipalContext(ContextType.Machine);
             var user = new UserPrincipal(context)
                            {

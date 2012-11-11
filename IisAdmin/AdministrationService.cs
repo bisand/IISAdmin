@@ -9,9 +9,9 @@ using IisAdmin.Interfaces;
 
 namespace IisAdmin
 {
-    public class Administration : IAdministration
+    public class AdministrationService : IAdministrationService
     {
-        #region IAdministration Members
+        #region IAdministrationService Members
 
         /// <summary>
         /// </summary>
@@ -58,7 +58,7 @@ namespace IisAdmin
             catch (Exception ex)
             {
                 // Here we could catch different exceptions, and maybe return a more sensable error response.
-                Debug.WriteLine("An error occured while creating the new user {0}. Exception:{1}", username, ex.Message);
+                Console.WriteLine("An error occured while creating the new user {0}. Exception:{1}", username, ex.Message);
                 return false;
             }
         }
@@ -91,7 +91,7 @@ namespace IisAdmin
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("An error occured while trying to delete the user {0}. Exception:{1}", username,
+                Console.WriteLine("An error occured while trying to delete the user {0}. Exception:{1}", username,
                                 ex.Message);
                 return false;
             }
@@ -126,7 +126,7 @@ namespace IisAdmin
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("An error occured while trying to delete the user {0}. Exception:{1}", username,
+                Console.WriteLine("An error occured while trying to delete the user {0}. Exception:{1}", username,
                                 ex.Message);
                 return false;
             }

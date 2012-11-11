@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IisAdmin.Tests.Unit", "IisA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IisAdmin.Tests.Integration", "IisAdmin.Tests.Integration\IisAdmin.Tests.Integration.csproj", "{3D66BCBC-DBC5-44C5-A19E-BF29D426E749}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extarnal", "Extarnal", "{A1FA5E21-B071-410A-AFA3-C912F69B51C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClearUsernameBinding", "ClearUserPassBinding\ClearUsernameBinding.csproj", "{D2BC4C2B-591E-4489-9515-0075112F73B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{3D66BCBC-DBC5-44C5-A19E-BF29D426E749}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D66BCBC-DBC5-44C5-A19E-BF29D426E749}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D66BCBC-DBC5-44C5-A19E-BF29D426E749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2BC4C2B-591E-4489-9515-0075112F73B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2BC4C2B-591E-4489-9515-0075112F73B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2BC4C2B-591E-4489-9515-0075112F73B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2BC4C2B-591E-4489-9515-0075112F73B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +55,6 @@ Global
 		{0E92C3F1-2E5C-48F6-9F9F-0FDCF58E4A23} = {6570163B-CCED-44E6-8FFE-CDD72ADE4B2B}
 		{437A66A2-FD28-4418-BC0D-16A5938FC9D8} = {6570163B-CCED-44E6-8FFE-CDD72ADE4B2B}
 		{3D66BCBC-DBC5-44C5-A19E-BF29D426E749} = {6570163B-CCED-44E6-8FFE-CDD72ADE4B2B}
+		{D2BC4C2B-591E-4489-9515-0075112F73B0} = {A1FA5E21-B071-410A-AFA3-C912F69B51C4}
 	EndGlobalSection
 EndGlobal

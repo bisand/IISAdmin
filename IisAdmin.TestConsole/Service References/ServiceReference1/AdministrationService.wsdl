@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AdministrationService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:1337/AdministrationService/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:1337/AdministrationService/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAdministrationService_AddUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUser" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_AddUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_DelUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:DelUser" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_DelUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DelUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_SetPasswd_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetPasswd" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_SetPasswd_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetPasswdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_ResetPermissions_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResetPermissions" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_ResetPermissions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResetPermissionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_AddHost_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddHost" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_AddHost_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddHostResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_DelHost_InputMessage">
+    <wsdl:part name="parameters" element="tns:DelHost" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_DelHost_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DelHostResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_MkDir_InputMessage">
+    <wsdl:part name="parameters" element="tns:MkDir" />
+  </wsdl:message>
+  <wsdl:message name="IAdministrationService_MkDir_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MkDirResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAdministrationService">
+    <wsdl:operation name="AddUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/AddUser" message="tns:IAdministrationService_AddUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/AddUserResponse" message="tns:IAdministrationService_AddUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DelUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/DelUser" message="tns:IAdministrationService_DelUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/DelUserResponse" message="tns:IAdministrationService_DelUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPasswd">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/SetPasswd" message="tns:IAdministrationService_SetPasswd_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/SetPasswdResponse" message="tns:IAdministrationService_SetPasswd_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetPermissions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/ResetPermissions" message="tns:IAdministrationService_ResetPermissions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/ResetPermissionsResponse" message="tns:IAdministrationService_ResetPermissions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddHost">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/AddHost" message="tns:IAdministrationService_AddHost_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/AddHostResponse" message="tns:IAdministrationService_AddHost_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DelHost">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/DelHost" message="tns:IAdministrationService_DelHost_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/DelHostResponse" message="tns:IAdministrationService_DelHost_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MkDir">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdministrationService/MkDir" message="tns:IAdministrationService_MkDir_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdministrationService/MkDirResponse" message="tns:IAdministrationService_MkDir_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ClearUsernameBinding_IAdministrationService" type="tns:IAdministrationService">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddUser">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/AddUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelUser">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/DelUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPasswd">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/SetPasswd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetPermissions">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/ResetPermissions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddHost">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/AddHost" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelHost">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/DelHost" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MkDir">
+      <soap12:operation soapAction="http://tempuri.org/IAdministrationService/MkDir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdministrationService">
+    <wsdl:port name="ClearUsernameBinding_IAdministrationService" binding="tns:ClearUsernameBinding_IAdministrationService">
+      <soap12:address location="http://localhost:1337/AdministrationService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
