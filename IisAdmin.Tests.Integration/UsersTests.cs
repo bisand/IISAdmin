@@ -16,7 +16,7 @@ namespace IisAdmin.Tests.Unit
         {
             var username = string.Format("testUser{0}",DateTime.Now.Millisecond);
             var administration = new Administration();
-            administration.AddUser(username, "!Password123", "");
+            administration.AddUser(username, "!Password123", "www.test.com");
 
             var context = new PrincipalContext(ContextType.Machine);
             var grp = GroupPrincipal.FindByIdentity(context, "IIS_IUSRS");

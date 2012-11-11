@@ -11,7 +11,6 @@ namespace IisAdmin.Tests.Unit
     public class FileSystemTests
     {
         [Test]
-        [PermissionSetAttribute(SecurityAction.Demand, Name = "FullTrust")]
         public void When_Creating_Home_Directory__Then_It_Should_Have_The_Appropriate_Rights()
         {
             var username = string.Format("testUser{0}", DateTime.Now.Millisecond);

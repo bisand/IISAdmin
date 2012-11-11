@@ -1,24 +1,41 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Microsoft.Web.Administration;
 
 namespace IisAdmin.Servers
 {
     public class IisServer
     {
-        public bool AddWebSite(string username, string fqdn, string homeDirectory, string bindingInformation)
+        public bool AddWebSite(string username, string password, string fqdn, string homeDirectory,
+                               string bindingProtocol, string bindingInformation)
         {
             using (var serverManager = new ServerManager())
             {
-                var pool = serverManager.ApplicationPools.Add(fqdn);
+                ApplicationPool pool = serverManager.ApplicationPools.Add(fqdn);
                 pool.ManagedRuntimeVersion = "v4.0";
-                pool.ProcessModel.IdentityType = ProcessModelIdentityType.SpecificUser;
-                pool.ProcessModel.UserName = username;
-                var site = serverManager.Sites.Add(fqdn, "http", bindingInformation, homeDirectory);
-                var app = site.Applications.FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                {
+                    pool.ProcessModel.IdentityType = ProcessModelIdentityType.ApplicationPoolIdentity;
+                }
+                else
+                {
+                    pool.ProcessModel.IdentityType = ProcessModelIdentityType.SpecificUser;
+                    pool.ProcessModel.UserName = username;
+                    pool.ProcessModel.Password = password;
+                }
+                Site site = serverManager.Sites.Add(fqdn, bindingProtocol, bindingInformation, homeDirectory);
+                Application app = site.Applications.FirstOrDefault();
                 app.ApplicationPoolName = pool.Name;
-                
+
                 serverManager.CommitChanges();
             }
+
+            var filename = Path.Combine(homeDirectory, "index.html");
+            using (StreamWriter sw = File.CreateText(filename))
+            {
+                sw.Write("<html><body><h1 style=\"font-family:'Segoe UI',Helvetica,Arial,sans-serif;\">Hello World!</h1></body></html>");
+            }
+
             return true;
         }
     }

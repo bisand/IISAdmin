@@ -4,6 +4,7 @@ using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Security.AccessControl;
 using IisAdmin.Configuration;
+using IisAdmin.Database;
 using IisAdmin.Interfaces;
 
 namespace IisAdmin
@@ -13,12 +14,11 @@ namespace IisAdmin
         #region IAdministration Members
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="passwd"></param>
-        /// <param name="fqdn"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <param name="passwd"> </param>
+        /// <param name="fqdn"> </param>
+        /// <returns> </returns>
         public bool AddUser(string username, string passwd, string fqdn)
         {
             try
@@ -38,7 +38,7 @@ namespace IisAdmin
                 user.Save();
 
                 // Adding new user to the IIS_IUSRS group. Maybe we should add a separate group for each user. Maybe in some other release...
-                GroupPrincipal grp = GroupPrincipal.FindByIdentity(context, "IIS_IUSRS");
+                var grp = GroupPrincipal.FindByIdentity(context, "IIS_IUSRS");
                 if (grp != null)
                 {
                     grp.Members.Add(user);
@@ -47,8 +47,11 @@ namespace IisAdmin
 
                 AddUserRemote(username, passwd);
 
-                string homeDirectory = Path.Combine(AppSettings.HomeDirectory, username);
+                var homeDirectory = Path.Combine(AppSettings.HomeDirectory, username);
                 MkDir(username, homeDirectory);
+
+                var storage = new InternalStorage();
+                storage.AddUser(username, passwd, homeDirectory, fqdn);
 
                 return true;
             }
@@ -61,10 +64,9 @@ namespace IisAdmin
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <returns> </returns>
         public bool DelUser(string username)
         {
             try
@@ -72,7 +74,7 @@ namespace IisAdmin
                 // Retrieving context from local machine.
                 var context = new PrincipalContext(ContextType.Machine);
                 // Locate the user.
-                UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
+                var user = UserPrincipal.FindByIdentity(context, username);
                 if (user != null)
                 {
                     // Delete the user if it exists.
@@ -81,6 +83,9 @@ namespace IisAdmin
 
                 DelUserRemote(username);
 
+                var storage = new InternalStorage();
+                storage.DeleteUser(username);
+
                 // It's debatable if we should return true if the user does not exist in the first place...
                 return true;
             }
@@ -93,11 +98,10 @@ namespace IisAdmin
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="passwd"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <param name="passwd"> </param>
+        /// <returns> </returns>
         public bool SetPasswd(string username, string passwd)
         {
             try
@@ -105,7 +109,7 @@ namespace IisAdmin
                 // Retrieving context from local machine.
                 var context = new PrincipalContext(ContextType.Machine);
                 // Locate the user.
-                UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
+                var user = UserPrincipal.FindByIdentity(context, username);
                 if (user != null)
                 {
                     // Delete the user if it exists.
@@ -114,6 +118,9 @@ namespace IisAdmin
 
                 SetPasswdRemote(username, passwd);
 
+                var storage = new InternalStorage();
+                storage.SetPassword(username, passwd);
+
                 // It's debatable if we should return true if the user does not exist in the first place...
                 return true;
             }
@@ -126,54 +133,53 @@ namespace IisAdmin
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="directory"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <param name="directory"> </param>
+        /// <returns> </returns>
         public bool MkDir(string username, string directory)
         {
-            DirectoryInfo info = Directory.CreateDirectory(directory);
-            DirectorySecurity security = info.GetAccessControl();
+            var info = Directory.CreateDirectory(directory);
+            var security = info.GetAccessControl();
             security.AddAccessRule(new FileSystemAccessRule(username,
                                                             FileSystemRights.Read |
                                                             FileSystemRights.Write |
                                                             FileSystemRights.Modify |
                                                             FileSystemRights.CreateDirectories |
                                                             FileSystemRights.CreateFiles |
-                                                            FileSystemRights.ReadAndExecute
-                                                            , AccessControlType.Allow));
+                                                            FileSystemRights.ReadAndExecute,
+                                                            InheritanceFlags.ContainerInherit |
+                                                            InheritanceFlags.ObjectInherit,
+                                                            PropagationFlags.None,
+                                                            AccessControlType.Allow));
             info.SetAccessControl(security);
             return true;
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <returns> </returns>
         public bool ResetPermissions(string username)
         {
             return true;
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="fqdn"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <param name="fqdn"> </param>
+        /// <returns> </returns>
         public bool AddHost(string username, string fqdn)
         {
             return true;
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="fqdn"></param>
-        /// <returns></returns>
+        /// <param name="username"> </param>
+        /// <param name="fqdn"> </param>
+        /// <returns> </returns>
         public bool DelHost(string username, string fqdn)
         {
             return true;
