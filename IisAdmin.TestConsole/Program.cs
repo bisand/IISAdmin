@@ -1,28 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.DirectoryServices.AccountManagement;
-using System.IO;
-using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Security;
-using System.Text;
-using System.Threading.Tasks;
-using IisAdmin.Interfaces;
 using IisAdmin.TestConsole.ServiceReference1;
 
 namespace IisAdmin.TestConsole
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var proxy = new AdministrationServiceClient();
-            proxy.ClientCredentials.UserName.UserName = "admin";
-            proxy.ClientCredentials.UserName.Password = "password";
+            Console.WriteLine("Running tests against a remote service...");
+            Console.WriteLine("");
 
-            var addUser = proxy.AddUser("test", "test", "www.test.com");
+            var proxy = new AdministrationServiceClient();
+            if (proxy.ClientCredentials != null)
+            {
+                proxy.ClientCredentials.UserName.UserName = "admin";
+                proxy.ClientCredentials.UserName.Password = "password";
+            }
+
+            var simpleRandom = DateTime.Now.Millisecond;
+            var username = string.Format("testUser{0}", simpleRandom);
+            const string password = "!Password123";
+            var fqdn = string.Format("www.testuser{0}.com", simpleRandom);
+
+            // Test to see if we could add a new user.
+            var addUser = proxy.AddUser(username, password, fqdn);
+            if (addUser)
+                Console.WriteLine("Successfully created user: {0}", username);
+
+            // Test to see if we could reset permissions on home directory.
+            var resetPermissions = proxy.ResetPermissions(username);
+            if (resetPermissions)
+                Console.WriteLine("Successfully reset permissions for user: {0}", username);
+
+            // Test to see if we could add a new host on IIS.
+            var addHost = proxy.AddHost(username, fqdn);
+            if (addHost)
+                Console.WriteLine("Successfully added host: {0} for user: {1}", fqdn, username);
+
+            // Test to see if we could delete the newly created host from IIS.
+            var delHost = proxy.DelHost(username, fqdn);
+            if (delHost)
+                Console.WriteLine("Successfully deleted host: {0} for user: {1}", fqdn, username);
+
+            // Test to see if we could delete the newly created user from Windows.
+            var delUser = proxy.DelUser(username);
+            if (delUser)
+                Console.WriteLine("Successfully deleted user: {0}", username);
+
+            Console.WriteLine("");
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
         }
     }
 }

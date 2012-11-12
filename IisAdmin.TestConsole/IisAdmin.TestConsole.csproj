@@ -83,10 +83,6 @@
       <Project>{d2bc4c2b-591e-4489-9515-0075112f73b0}</Project>
       <Name>ClearUsernameBinding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IisAdmin\IisAdmin.csproj">
-      <Project>{B985A01E-29F4-4B69-9F8A-1F8F6464D7C8}</Project>
-      <Name>IisAdmin</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

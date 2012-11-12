@@ -11,7 +11,7 @@ namespace IisAdmin.Validators
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
                 throw new SecurityTokenException("Username and password required");
 
-            if (userName != "admin" && password != "password")
+            if (userName != "admin" || password != "password")
                 throw new FaultException(string.Format("Wrong username ({0}) or password ", userName));
         }
     }
