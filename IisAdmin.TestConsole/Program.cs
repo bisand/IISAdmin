@@ -21,6 +21,7 @@ namespace IisAdmin.TestConsole
             var proxy = new AdministrationServiceClient();
             proxy.ClientCredentials.UserName.UserName = "admin";
             proxy.ClientCredentials.UserName.Password = "password";
+
             var addUser = proxy.AddUser("test", "test", "www.test.com");
         }
     }

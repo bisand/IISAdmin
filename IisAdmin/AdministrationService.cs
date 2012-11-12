@@ -6,6 +6,7 @@ using System.Security.AccessControl;
 using IisAdmin.Configuration;
 using IisAdmin.Database;
 using IisAdmin.Interfaces;
+using IisAdmin.Servers;
 
 namespace IisAdmin
 {
@@ -162,7 +163,34 @@ namespace IisAdmin
         /// <returns> </returns>
         public bool ResetPermissions(string username)
         {
-            return true;
+            try
+            {
+                // Get the home directory from database
+                var storage = new InternalStorage();
+                var homeDirectory = storage.GetHomeDirectory(username);
+
+                // Reset permissions on the directory and subdirectories. This could also be handled on remote locations...
+                var info = new DirectoryInfo(homeDirectory);
+                var security = info.GetAccessControl();
+                security.AddAccessRule(new FileSystemAccessRule(username,
+                                                                FileSystemRights.Read |
+                                                                FileSystemRights.Write |
+                                                                FileSystemRights.Modify |
+                                                                FileSystemRights.CreateDirectories |
+                                                                FileSystemRights.CreateFiles |
+                                                                FileSystemRights.ReadAndExecute,
+                                                                InheritanceFlags.ContainerInherit |
+                                                                InheritanceFlags.ObjectInherit,
+                                                                PropagationFlags.None,
+                                                                AccessControlType.Allow));
+                info.SetAccessControl(security);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
         }
 
         /// <summary>
@@ -172,7 +200,25 @@ namespace IisAdmin
         /// <returns> </returns>
         public bool AddHost(string username, string fqdn)
         {
-            return true;
+            try
+            {
+                // Get the home directory from database
+                var storage = new InternalStorage();
+                var homeDirectory = storage.GetHomeDirectory(username);
+                var password = storage.GetPassword(username); // DANGER!!! It will be used to set the user to run the application pool. Find another solution!!!
+
+                var server = new IisServer();
+
+                // Adding a new web site.
+                server.AddWebSite(username, password, fqdn, homeDirectory, "http", string.Format("*:80:{0}", fqdn));
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
         }
 
         /// <summary>
@@ -182,7 +228,20 @@ namespace IisAdmin
         /// <returns> </returns>
         public bool DelHost(string username, string fqdn)
         {
-            return true;
+            try
+            {
+                var server = new IisServer();
+
+                // Adding a new web site.
+                server.DeleteWebSite(username, fqdn);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
         }
 
         #endregion

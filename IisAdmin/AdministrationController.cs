@@ -14,7 +14,22 @@ namespace IisAdmin.ServiceControl
 
         public void Start()
         {
-            #region Deprecated Stuff
+            //ConfigureServiceHost();
+
+            // Starting Service Host with a custom Username/Password binding instead of the standard WCF bindings....
+            Host = new ServiceHost(typeof (AdministrationService));
+            Host.Open();
+
+        }
+
+        public void Stop()
+        {
+            Host.Close();
+        }
+
+        private void ConfigureServiceHost()
+        {
+            #region Deprecated Stuff. We moved to config file instead.
 
             //var binding = new WSHttpBinding();
             //binding.Security.Mode = SecurityMode.Message;
@@ -24,17 +39,7 @@ namespace IisAdmin.ServiceControl
             //    ClientCredentialType = MessageCredentialType.UserName,
             //    EstablishSecurityContext = false,
             //    NegotiateServiceCredential = false
-            //    //EstablishSecurityContext = true,
-            //    //NegotiateServiceCredential = true
             //};
-
-            ////var binding = new BasicHttpBinding();
-            ////binding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
-            ////binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            ////binding.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.None;
-            ////binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
-            ////binding.Security.Message.AlgorithmSuite = SecurityAlgorithmSuite.Default;
-            ////binding.Security.Transport.Realm = "IISAdmin Authentication";
 
             //var url = ConfigurationManager.AppSettings["EndpointUri"];
             //var endpointUri = new Uri(url);
@@ -49,15 +54,6 @@ namespace IisAdmin.ServiceControl
             //Host.Open();
 
             #endregion
-
-            Host = new ServiceHost(typeof (AdministrationService));
-            Host.Open();
-
-        }
-
-        public void Stop()
-        {
-            Host.Close();
         }
     }
 }

@@ -38,5 +38,27 @@ namespace IisAdmin.Servers
 
             return true;
         }
+
+        public bool DeleteWebSite(string username, string fqdn)
+        {
+            using (var serverManager = new ServerManager())
+            {
+                var site = serverManager.Sites.FirstOrDefault(x => x.Name == fqdn);
+                var pool = serverManager.ApplicationPools.FirstOrDefault(x => x.Name == fqdn);
+                if (site != null)
+                {
+                    foreach (var app in site.Applications)
+                    {
+                        app.Delete();
+                    }
+                    site.Delete();
+                }
+                if (pool != null) 
+                    pool.Delete();
+
+                serverManager.CommitChanges();
+            }
+            return true;
+        }
     }
 }

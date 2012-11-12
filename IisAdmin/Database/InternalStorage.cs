@@ -14,7 +14,7 @@ namespace IisAdmin.Database
                 InitializeDatabase();
         }
 
-        // DANGER!!! We should NOT store passwords in the database. 
+        // DANGER!!! DANGER!!! We should NOT store passwords in the database. 
         public void AddUser(string username, string password, string homeDirectory, string fqdn)
         {
             using (var connection = new SQLiteConnection(_connectionString))
@@ -42,7 +42,7 @@ namespace IisAdmin.Database
             }
         }
 
-        // DANGER!!! We should NOT store passwords in the database. 
+        // DANGER!!! DANGER!!! We should NOT store passwords in the database. 
         public void SetPassword(string username, string password)
         {
             using (var connection = new SQLiteConnection(_connectionString))
@@ -52,6 +52,46 @@ namespace IisAdmin.Database
                 var sql = string.Format("UPDATE Users SET Password='{0}' WHERE Username='{1}'", password, username);
 
                 ExecuteNonQuery(connection, sql);
+            }
+        }
+
+        // DANGER!!! DANGER!!! We should NOT store passwords in the database. 
+        public string GetPassword(string username)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var sql = string.Format("SELECT Password FROM Users WHERE Username='{0}'", username);
+
+                var value = ExecuteScalar(connection, sql);
+                return value;
+            }
+        }
+
+        public string GetHomeDirectory(string username)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var sql = string.Format("SELECT HomeDirectory FROM Users WHERE Username='{0}'", username);
+
+                var value = ExecuteScalar(connection, sql);
+                return value;
+            }
+        }
+
+        public string GetFqdn(string username)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var sql = string.Format("SELECT fqdn FROM Users WHERE Username='{0}'", username);
+
+                var value = ExecuteScalar(connection, sql);
+                return value;
             }
         }
 
@@ -75,6 +115,30 @@ namespace IisAdmin.Database
                 // Close the database connection. Uncommetted changes will be lost.
                 connection.Close();
             }
+        }
+
+        private static string ExecuteScalar(SQLiteConnection connection, string sql)
+        {
+            object value;
+            try
+            {
+                using (var trans = connection.BeginTransaction())
+                {
+                    // Create the command and execute query
+                    var cmd = new SQLiteCommand(sql, connection);
+                    value = cmd.ExecuteScalar();
+                    cmd.Dispose();
+
+                    // Commit the changes into the database
+                    trans.Commit();
+                }
+            }
+            finally
+            {
+                // Close the database connection. Uncommetted changes will be lost.
+                connection.Close();
+            }
+            return value != null ? value.ToString() : string.Empty;
         }
 
         private void InitializeDatabase()

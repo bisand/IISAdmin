@@ -21,12 +21,11 @@ namespace IisAdmin.Tests.Unit
 
             var administration = new AdministrationService();
             var context = new PrincipalContext(ContextType.Machine);
-            var user = new UserPrincipal(context)
-                           {
-                               Name = username,
-                               UserCannotChangePassword = false,
-                               PasswordNeverExpires = true,
-                           };
+            var user = new UserPrincipal(context) {
+                Name = username,
+                UserCannotChangePassword = false,
+                PasswordNeverExpires = true,
+            };
             user.SetPassword(password);
             user.Save();
 
@@ -83,6 +82,37 @@ namespace IisAdmin.Tests.Unit
             // Cleaning up...
             Directory.Delete(dir, true);
             user.Delete();
+        }
+
+        [Test]
+        public void When_Adding_Web_Site__Then_It_Should_Be_Able_To_Be_Deleted()
+        {
+            var simpleRandom = DateTime.Now.Millisecond;
+            var username = string.Format("testUser{0}", simpleRandom);
+            const string password = "!Password123";
+            string fqdn = string.Format("www.testuser{0}.com", simpleRandom);
+            
+            var administrationService = new AdministrationService();
+            
+            // Test to see if we could add a new user.
+            var addUser = administrationService.AddUser(username, password, fqdn);
+            Assert.IsTrue(addUser);
+
+            // Test to see if we could reset permissions on home directory.
+            var resetPermissions = administrationService.ResetPermissions(username);
+            Assert.IsTrue(resetPermissions);
+
+            // Test to see if we could add a new host on IIS.
+            var addHost = administrationService.AddHost(username, fqdn);
+            Assert.IsTrue(addHost);
+
+            // Test to see if we could delete the newly created host from IIS.
+            var delHost = administrationService.DelHost(username, fqdn);
+            Assert.IsTrue(delHost);
+
+            // Test to see if we could delete the newly created user from Windows.
+            var delUser = administrationService.DelUser(username);
+            Assert.IsTrue(delUser);
         }
     }
 }
