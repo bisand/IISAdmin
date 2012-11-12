@@ -20,7 +20,8 @@ namespace IisAdmin.TestConsole
             var simpleRandom = DateTime.Now.Millisecond;
             var username = string.Format("testUser{0}", simpleRandom);
             const string password = "!Password123";
-            var fqdn = string.Format("www.testuser{0}.com", simpleRandom);
+            var fqdn = string.Format("testuser{0}.com", simpleRandom);
+            var fqdn2 = string.Format("www.testuser{0}.com", simpleRandom);
 
             // Test to see if we could add a new user.
             var addUser = proxy.AddUser(username, password, fqdn);
@@ -33,9 +34,9 @@ namespace IisAdmin.TestConsole
                 Console.WriteLine("Successfully reset permissions for user: {0}", username);
 
             // Test to see if we could add a new host on IIS.
-            var addHost = proxy.AddHost(username, fqdn);
+            var addHost = proxy.AddHost(username, fqdn2);
             if (addHost)
-                Console.WriteLine("Successfully added host: {0} for user: {1}", fqdn, username);
+                Console.WriteLine("Successfully added host: {0} for user: {1}", fqdn2, username);
 
             // Test to see if we could delete the newly created host from IIS.
             var delHost = proxy.DelHost(username, fqdn);

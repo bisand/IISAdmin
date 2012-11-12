@@ -24,6 +24,12 @@ namespace IisAdmin.Interfaces
         bool DelHost(string username, string fqdn);
 
         [OperationContract]
+        bool AddSite(string username, string fqdn);
+
+        [OperationContract]
+        bool DelSite(string username, string fqdn);
+
+        [OperationContract]
         bool MkDir(string username, string directory);
     }
 }

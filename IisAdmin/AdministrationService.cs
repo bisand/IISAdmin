@@ -24,6 +24,12 @@ namespace IisAdmin
         {
             try
             {
+                var server = new IisServer();
+                
+                // Check if binding allready exists. If it does, return false.
+                if(server.BindingExists(fqdn))
+                    return false;
+
                 // Retrieving context from local machine.
                 var context = new PrincipalContext(ContextType.Machine);
 
@@ -59,13 +65,12 @@ namespace IisAdmin
                 var mkDir = MkDir(username, rootHomeDirectory);
 
                 // Adding a new application pool.
-                var server = new IisServer();
-                server.AddApplicationPool(username, passwd, fqdn);
+                var addApplicationPool = server.AddApplicationPool(username, passwd, fqdn);
 
                 // Adding a new web site.
-                var addHost = AddHost(username, fqdn);
+                var addSite = AddSite(username, fqdn);
 
-                return mkDir & addHost;
+                return mkDir & addApplicationPool & addSite;
             }
             catch (Exception ex)
             {
@@ -211,8 +216,62 @@ namespace IisAdmin
         {
             try
             {
-                // Adding a new binding/host.
                 var server = new IisServer();
+
+                // Check if binding allready exists. If it does, return false.
+                if (server.BindingExists(fqdn))
+                    return false;
+
+                // Adding a new binding/host.
+                var addBinding = server.AddBinding(username, fqdn);
+
+                return addBinding;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="username"> </param>
+        /// <param name="fqdn"> </param>
+        /// <returns> </returns>
+        public bool DelHost(string username, string fqdn)
+        {
+            try
+            {
+                // Removing binding/host.
+                var server = new IisServer();
+                var removeBinding = server.RemoveBinding(username, fqdn);
+
+                return removeBinding;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="username"> </param>
+        /// <param name="fqdn"> </param>
+        /// <returns> </returns>
+        public bool AddSite(string username, string fqdn)
+        {
+            try
+            {
+                var server = new IisServer();
+
+                // Check if binding allready exists. If it does, return false.
+                if (server.BindingExists(fqdn))
+                    return false;
+
+                // Adding a new binding/host.
                 var poolName = server.GetApplicationPoolName(username);
 
                 // Create the site's root directory.
@@ -235,7 +294,7 @@ namespace IisAdmin
         /// <param name="username"> </param>
         /// <param name="fqdn"> </param>
         /// <returns> </returns>
-        public bool DelHost(string username, string fqdn)
+        public bool DelSite(string username, string fqdn)
         {
             try
             {

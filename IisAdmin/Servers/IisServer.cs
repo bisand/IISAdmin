@@ -135,6 +135,25 @@ namespace IisAdmin.Servers
             return result;
         }
 
+        public bool BindingExists(string fqdn)
+        {
+            var result = false;
+            using (var serverManager = new ServerManager())
+            {
+                var bindingInformation = string.Format("*:80:{0}", fqdn);
+                const string bindingProtocol = "http";
+                foreach (var site in serverManager.Sites)
+                {
+                    var binding = site.Bindings.FirstOrDefault(x => x.BindingInformation == bindingInformation && x.Protocol == bindingProtocol);
+                    if (binding != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public bool SetPassword(string username, string password)
         {
             var result = false;
