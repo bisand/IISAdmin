@@ -1,4 +1,5 @@
-﻿using IisAdmin.ServiceControl;
+﻿using System.Configuration;
+using IisAdmin.ServiceControl;
 using Topshelf;
 
 namespace IisAdmin.Service
@@ -17,9 +18,9 @@ namespace IisAdmin.Service
                                                                 });
                                     x.RunAsLocalSystem();
 
-                                    x.SetDescription("IIS Admin");
-                                    x.SetDisplayName("IIS Admin");
-                                    x.SetServiceName("iisadmin");
+                                    x.SetDescription(ConfigurationManager.AppSettings["ServiceDescription"]);
+                                    x.SetDisplayName(ConfigurationManager.AppSettings["ServiceDisplayName"]);
+                                    x.SetServiceName(ConfigurationManager.AppSettings["ServiceName"]);
                                 });
         }
     }

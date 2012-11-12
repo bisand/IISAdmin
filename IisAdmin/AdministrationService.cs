@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
 using IisAdmin.Configuration;
-using IisAdmin.Database;
 using IisAdmin.Interfaces;
 using IisAdmin.Servers;
 
@@ -26,8 +26,14 @@ namespace IisAdmin
             {
                 // Retrieving context from local machine.
                 var context = new PrincipalContext(ContextType.Machine);
+
+                // Check if user allready exists. Return false if it does.
+                var user = UserPrincipal.FindByIdentity(context, username);
+                if (user != null)
+                    return false;
+
                 // Create user an set some appropriate values.
-                var user = new UserPrincipal(context)
+                user = new UserPrincipal(context)
                                {
                                    Name = username,
                                    UserCannotChangePassword = false,
@@ -48,13 +54,18 @@ namespace IisAdmin
 
                 AddUserRemote(username, passwd);
 
-                var homeDirectory = Path.Combine(AppSettings.HomeDirectory, username);
-                MkDir(username, homeDirectory);
+                // Create the user's root directory.
+                var rootHomeDirectory = Path.Combine(AppSettings.HomeDirectory, username);
+                var mkDir = MkDir(username, rootHomeDirectory);
 
-                var storage = new InternalStorage();
-                storage.AddUser(username, passwd, homeDirectory, fqdn);
+                // Adding a new application pool.
+                var server = new IisServer();
+                server.AddApplicationPool(username, passwd, fqdn);
 
-                return true;
+                // Adding a new web site.
+                var addHost = AddHost(username, fqdn);
+
+                return mkDir & addHost;
             }
             catch (Exception ex)
             {
@@ -84,11 +95,12 @@ namespace IisAdmin
 
                 DelUserRemote(username);
 
-                var storage = new InternalStorage();
-                storage.DeleteUser(username);
+                var server = new IisServer();
+                var deletedSites = server.DeleteUsersWebSites(username);
 
-                // It's debatable if we should return true if the user does not exist in the first place...
-                return true;
+                // We leave the users files and folder intact for future storage.
+
+                return deletedSites;
             }
             catch (Exception ex)
             {
@@ -119,11 +131,10 @@ namespace IisAdmin
 
                 SetPasswdRemote(username, passwd);
 
-                var storage = new InternalStorage();
-                storage.SetPassword(username, passwd);
+                var server = new IisServer();
+                var pwdSet = server.SetPassword(username, passwd);
 
-                // It's debatable if we should return true if the user does not exist in the first place...
-                return true;
+                return pwdSet;
             }
             catch (Exception ex)
             {
@@ -165,9 +176,7 @@ namespace IisAdmin
         {
             try
             {
-                // Get the home directory from database
-                var storage = new InternalStorage();
-                var homeDirectory = storage.GetHomeDirectory(username);
+                var homeDirectory = Path.Combine(AppSettings.HomeDirectory, username);
 
                 // Reset permissions on the directory and subdirectories. This could also be handled on remote locations...
                 var info = new DirectoryInfo(homeDirectory);
@@ -202,17 +211,17 @@ namespace IisAdmin
         {
             try
             {
-                // Get the home directory from database
-                var storage = new InternalStorage();
-                var homeDirectory = storage.GetHomeDirectory(username);
-                var password = storage.GetPassword(username); // DANGER!!! It will be used to set the user to run the application pool. Find another solution!!!
-
+                // Adding a new binding/host.
                 var server = new IisServer();
+                var poolName = server.GetApplicationPoolName(username);
 
-                // Adding a new web site.
-                server.AddWebSite(username, password, fqdn, homeDirectory, "http", string.Format("*:80:{0}", fqdn));
+                // Create the site's root directory.
+                var homeDirectory = Path.Combine(AppSettings.HomeDirectory, username, server.ReverseFqdn(fqdn));
+                var mkDir = MkDir(username, homeDirectory);
 
-                return true;
+                var addHost = server.AddHost(username, fqdn, poolName, homeDirectory, "http", string.Format("*:80:{0}", fqdn));
+
+                return mkDir & addHost;
             }
             catch (Exception e)
             {
@@ -230,12 +239,11 @@ namespace IisAdmin
         {
             try
             {
+                // Removing binding/host.
                 var server = new IisServer();
+                var deleteWebSite = server.DeleteWebSite(username, fqdn);
 
-                // Adding a new web site.
-                server.DeleteWebSite(username, fqdn);
-
-                return true;
+                return deleteWebSite;
             }
             catch (Exception e)
             {
