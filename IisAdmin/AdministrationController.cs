@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -19,12 +20,25 @@ namespace IisAdmin.ServiceControl
             // Starting Service Host with a custom Username/Password binding instead of the standard WCF bindings....
             Host = new ServiceHost(typeof (AdministrationService));
             Host.Open();
-
+            PrintUsage();
         }
 
         public void Stop()
         {
             Host.Close();
+        }
+
+        public void PrintUsage()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Access web service from this url:");
+            Console.WriteLine("{0}", Host.BaseAddresses.FirstOrDefault());
+            Console.WriteLine("");
+            Console.WriteLine("You can also install it as a service:");
+            Console.WriteLine("");
+            Console.WriteLine("IISAdmin.Service.exe install");
+            Console.WriteLine("");
+            Console.WriteLine("Type: IISAdmin.Service.exe --help for more info");
         }
 
         private void ConfigureServiceHost()
